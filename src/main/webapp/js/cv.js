@@ -1,14 +1,23 @@
-var cv = (function() {
+var CV = (function() {
 
   return {
-    getCV: function() {
-    $.getJSON("http://cv:8080/cv/Geert van der Ploeg.json?callback=?")
+    populate: function(cv) {
+      $("#headerHero h1").html(cv.firstName + " " + cv.familyName);
+      $("p#headerIntroduction").text(cv.introduction);
+      $("")
+    },
+    getCV: function(name, success) {
+    $.getJSON("/rest/cv/" + encodeURIComponent(name) +".json")
         .success(function(data) {
-
+          console.log("Got data from API: " + JSON.stringify(data));
+          success(data);
     })
   }
   }
 })();
 
+$(function() {
 
-cv;
+  var cv = CV.getCV("geert", CV.populate);
+
+});

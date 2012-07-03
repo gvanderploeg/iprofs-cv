@@ -5,14 +5,15 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
-import com.sun.jersey.api.json.JSONWithPadding;
 import com.yammer.metrics.annotation.Timed;
 
+import nl.iprofs.geert.cv.model.CV;
 import nl.iprofs.geert.cv.service.CVBackend;
 
 @Path("/cv")
-@Produces("application/x-javascript")
+@Produces(MediaType.APPLICATION_JSON)
 public class CVResource {
 
   private CVBackend backend;
@@ -20,12 +21,13 @@ public class CVResource {
   @GET
   @Path("{name}.json")
   @Timed
-  public JSONWithPadding getCV(@PathParam("name") String name, @QueryParam("callback") String callback) {
+  public CV getCV(@PathParam("name") String name, @QueryParam("callback") String callback) {
 
     if (name != null) {
-      return new JSONWithPadding(backend.getCV(name), callback);
+      return backend.getCV(name);
     } else {
-      return new JSONWithPadding(null, callback);
+
+      return null;
     }
   }
 

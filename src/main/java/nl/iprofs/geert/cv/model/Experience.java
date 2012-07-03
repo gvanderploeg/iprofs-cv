@@ -1,54 +1,71 @@
 package nl.iprofs.geert.cv.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Id;
+public class Experience extends Entity {
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-// workaround for http://code.google.com/p/orient/issues/detail?id=869
-@JsonIgnoreProperties({"handler"})
-public class Experience {
-
-  @Id
-  private Object id;
+  private String position;
+  private String company;
+  private String description;
 
 
-  private String title;
   private Date from;
   private Date until;
-  private String introduction;
-  private List<String> keywords;
 
-  public Experience() {
+  private List<KeywordCategory> keywordCategories = new ArrayList<KeywordCategory>();
+
+  public String getPosition() {
+    return position;
   }
 
-  public Experience(String title, Date from, Date until, String introduction, List<String> keywords) {
-    this.title = title;
-    this.from = from;
-    this.until = until;
-    this.introduction = introduction;
-    this.keywords = keywords;
+  public void setPosition(String position) {
+    this.position = position;
   }
 
-  public String getTitle() {
-    return title;
+  public String getCompany() {
+    return company;
+  }
+
+  public void setCompany(String company) {
+    this.company = company;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public Date getFrom() {
     return from;
   }
 
+  public void setFrom(Date from) {
+    this.from = from;
+  }
+
   public Date getUntil() {
     return until;
   }
 
-  public String getIntroduction() {
-    return introduction;
+  public void setUntil(Date until) {
+    this.until = until;
   }
 
-  public List<String> getKeywords() {
-    return keywords;
+
+  public List<KeywordCategory> getKeywordCategories() {
+    return keywordCategories;
+  }
+
+  public void setKeywordCategories(List<KeywordCategory> keywordCategories) {
+    this.keywordCategories = keywordCategories;
+  }
+
+  public void addKeywordCategory(KeywordCategory kc) {
+    keywordCategories.add(kc);
   }
 }

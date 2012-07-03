@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import nl.iprofs.geert.cv.model.CV;
 import nl.iprofs.geert.cv.model.Experience;
+import nl.iprofs.geert.cv.model.KeywordCategory;
 
 public class CVBackend {
 
@@ -25,25 +26,47 @@ public class CVBackend {
 
   private static final String DB_URL = "local:target/cvdb";
 
+  private List<CV> cvs = new ArrayList<CV>();
 
-  private List<CV> cvs = Arrays.asList(
-      new CV("Geert van der Ploeg",
-          Arrays.asList(
-              new Experience(
-                  "Bij SURFnet",
-                  new Date(System.currentTimeMillis() - 86400 * 600),
-                  new Date(),
-                  "Ik heb flink m'n best gedaan",
-                  Arrays.asList("OAuth", "SAML")))),
-      new CV("Pietje Puk",
-          Arrays.asList(
-              new Experience(
-                  "Bij de ING",
-                  new Date(System.currentTimeMillis() - 86400 * 300),
-                  new Date(),
-                  "Ik heb ook flink m'n best gedaan",
-                  Arrays.asList("Spring", "JPA")))));
-  private static final String DEEP = "CV:-1 Experience.handler:0";
+
+  {
+    CV cv = new CV();
+    cv.setName("geert");
+    cv.setAvailability("Parttime, 80%");
+    cv.setBirthDate(new Date(1980, 4, 16));
+    cv.setFamilyName("van der Ploeg");
+    cv.setFirstName("Geert");
+    cv.setInITSince(new Date(2000, 11, 1));
+    cv.setPlaceOfBirth("Alkmaar");
+    cv.setIntroduction("Geert is een breed ontwikkelde software developer. Sinds 1997 is hij bezig met ICT.\n\n" +
+        "In de loop van de jaren heeft Geert een ruime ervaring opgedaan met webdevelopment en infrastructuur, vooral op het Unix platform. Geert beheerst niet alleen Java maar heeft ook veel ervaring opgedaan met scripttalen als PHP, Perl en Bash, en met veel networking-aspecten zoals routering, firewalling, IP-migraties en monitoring. Zijn analytische vermogen en brede ontwikkeling maken dat Geert een goede overview heeft over alle technische aspecten van projecten. \n\n" +
+        "Geert is leergierig en beschikt over prima communicatieve vaardigheden.");
+    cv.setPosition("Software-architect");
+    cv.addKeywordCategory(new KeywordCategory("Programmeertalen", Arrays.asList("Java J2EE", "Javascript", "PHP",
+        "Perl", "Bash", "SQL")));
+    cv.addKeywordCategory(new KeywordCategory("Scripting", Arrays.asList("XSLT", "CSS", "Ant", "Maven")));
+    cv.addKeywordCategory(new KeywordCategory("IDE's", Arrays.asList("Eclipse", "IntelliJ")));
+    cv.addKeywordCategory(new KeywordCategory("Application Servers", Arrays.asList("Apache Tomcat 4, 5, 6, 7",
+        "JBoss AS",
+            "IBM WebSphere 5, 6")));
+
+    Experience e1 = new Experience();
+    e1.setCompany("SURFnet");
+    e1.setDescription("Provisioning/Deprovisioning in identity federations\n" +
+        "Periode: juli 2011 - Heden\n" +
+        "Inzet en customization van een Open source Identity Managementcomponent (Syncope) voor provisioning van user accounts vanuit een identity federation naar service providers.");
+    e1.setFrom(new Date(2011, 0, 1));
+    e1.setUntil(new Date(2011, 11, 31));
+    e1.setPosition("Software-architect");
+    e1.addKeywordCategory(new KeywordCategory("Frameworks", Arrays.asList("Spring", "Wicket")));
+    cv.addExperience(e1);
+
+
+    cvs.add(cv);
+  }
+
+
+  private static final String DEEP = "CV:-1";
 
   // Init with static content
   public CVBackend() {
@@ -102,8 +125,11 @@ public class CVBackend {
       }.execute();
       if (result.size() > 1) {
         throw new IllegalStateException("More than one document found for primary key '" + name + "': " + result.size());
+      } else if (result.size() == 0) {
+        return null;
+      } else {
+        return (CV) db.getUserObjectByRecord(result.get(0), DEEP);
       }
-      return (CV) db.getUserObjectByRecord(result.get(0), DEEP);
     } finally {
       db.close();
     }
