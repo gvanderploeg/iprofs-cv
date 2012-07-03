@@ -9,7 +9,8 @@ import nl.iprofs.geert.cv.CVResource;
 public class CVService extends Service<CVConfiguration> {
 
   public static void main(String[] args) throws Exception {
-    new CVService().run(args);
+    final CVService cvService = new CVService();
+    cvService.run(args);
   }
 
   private CVService() {
@@ -18,6 +19,8 @@ public class CVService extends Service<CVConfiguration> {
 
   @Override
   protected void initialize(CVConfiguration cvConfiguration, Environment environment) throws Exception {
-    environment.addResource(new CVResource());
+    CVResource cvResource = new CVResource();
+    cvResource.setBackend(new CVBackend());
+    environment.addResource(cvResource);
   }
 }
