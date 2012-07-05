@@ -36,7 +36,6 @@
 </head>
 
 <body>
-
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container-fluid">
@@ -118,6 +117,16 @@
     <div class="span9">
       <div id="headerHero" class="hero-unit">
         <h1>Curricula Vitæ</h1>
+        <!--
+        <script type="text/x-handlebars">
+          {{#view App.CvDetailView}}
+          <div class="name">
+            {{content.firstName}} {{content.familyName}}
+            {{firstName}} {{familyName}}
+          </div>
+          {{/view}}
+        </script>
+        -->
         <i id="picture" class="icon-github-sign pull-right"></i>
         <p id="headerIntroduction">Foobar</p>
         <a href="#" class="btn-success btn btn-large pull-right"><i class="icon-download"></i> Download as PDF</a>
@@ -135,29 +144,28 @@
 
       <!-- Row 9 wide -->
       <div class="row-fluid">
-        <div class="span4" id="container-applicationservers">
+        <div class="span4 keywordCategory" id="container-applicationservers">
         </div>
-        <div class="span4" id="container-programmeertalen">
+        <div class="span4 keywordCategory" id="container-programmeertalen">
         </div>
-        <div class="span4" id="container-scripting">
+        <div class="span4 keywordCategory" id="container-scripting">
         </div>
       </div><!--/row-->
       <!-- Row 9 wide -->
       <div class="row-fluid">
-        <div class="span4" id="container-ides">
+        <div class="span4 keywordCategory" id="container-ides">
         </div>
       </div><!--/row-->
 
 
 
-      <!-- Row 9 wide -->
+      <!--
       <div class="row-fluid">
         <div class="span9">
           <h2>Education</h2>
         </div>
       </div>
 
-      <!-- Row 9 wide -->
       <div class="row-fluid">
         <div class="span9">
           <h3>General</h3>
@@ -175,9 +183,9 @@
             <li>Oracle Certified Master - Java Enterprise Architect</li>
             <li>Sun Certified Java Programmer</li>
           </ul>
-        </div><!--/span-->
-      </div><!--/row-->
-
+        </div>
+      </div>
+-->
 
 
 
@@ -239,6 +247,10 @@
 <script src="../assets/js/bootstrap-carousel.js"></script>
 <script src="../assets/js/bootstrap-typeahead.js"></script>
 -->
+<script src="js/handlebars-1.0.0.beta.6.js"></script>
+<script src="js/ember-latest.js"></script>
+<!--<script src="js/ember-data-latest.js"></script>-->
 <script src="js/cv.js"></script>
+
 </body>
 </html>
