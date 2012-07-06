@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CV extends Entity {
+public class CV extends Entity implements Cloneable {
 
   private  String name;
 
@@ -132,5 +132,9 @@ public class CV extends Entity {
 
   public void setEducations(List<Education> educations) {
     this.educations = educations;
+  }
+
+  public CV clone() throws CloneNotSupportedException {
+    return (CV) super.clone();
   }
 }

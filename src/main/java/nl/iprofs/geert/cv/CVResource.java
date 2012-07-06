@@ -8,10 +8,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.yammer.dropwizard.auth.Auth;
 import com.yammer.metrics.annotation.Timed;
 
 import nl.iprofs.geert.cv.model.CV;
 import nl.iprofs.geert.cv.service.CVBackend;
+import nl.iprofs.geert.cv.service.CVPrincipal;
 
 @Path("/cvs")
 @Produces(MediaType.APPLICATION_JSON)
@@ -20,7 +22,6 @@ public class CVResource {
   private CVBackend backend;
 
   @GET
-  @Path("/")
   @Timed
   public List<CV> getAllCVs() {
     return backend.getCVs();
@@ -29,7 +30,7 @@ public class CVResource {
   @GET
   @Path("/{name}.json")
   @Timed
-  public CV getCV(@PathParam("name") String name) {
+  public CV getCV(@Auth(required = false) CVPrincipal user, @PathParam("name") String name) {
 
     if (name != null) {
       return backend.getCV(name);

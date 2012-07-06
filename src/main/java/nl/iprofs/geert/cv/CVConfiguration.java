@@ -6,7 +6,6 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class CVConfiguration extends Configuration {
 
-
   @JsonProperty
   private int port = 8080;
 

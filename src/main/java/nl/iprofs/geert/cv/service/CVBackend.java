@@ -2,7 +2,7 @@ package nl.iprofs.geert.cv.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.google.common.collect.Iterables;
@@ -26,17 +26,15 @@ public class CVBackend {
 
   private static final String DB_URL = "local:target/cvdb";
 
-  private List<CV> cvs = new ArrayList<CV>();
-
-
-  {
+  private static List<CV> getInitialCVSeed() {
+    List<CV> cvs = new ArrayList<CV>();
     CV cv = new CV();
     cv.setName("geert");
     cv.setAvailability("Parttime, 80%");
-    cv.setBirthDate(new Date(1980, 4, 16));
+    cv.setBirthDate(new GregorianCalendar(1980, 4, 16).getTime());
     cv.setFamilyName("van der Ploeg");
     cv.setFirstName("Geert");
-    cv.setInITSince(new Date(2000, 11, 1));
+    cv.setInITSince(new GregorianCalendar(2000, 0, 1).getTime());
     cv.setPlaceOfBirth("Alkmaar");
     cv.setIntroduction("Geert is een breed ontwikkelde software developer. Sinds 1997 is hij bezig met ICT.\n\n" +
         "In de loop van de jaren heeft Geert een ruime ervaring opgedaan met webdevelopment en infrastructuur, vooral op het Unix platform. Geert beheerst niet alleen Java maar heeft ook veel ervaring opgedaan met scripttalen als PHP, Perl en Bash, en met veel networking-aspecten zoals routering, firewalling, IP-migraties en monitoring. Zijn analytische vermogen en brede ontwikkeling maken dat Geert een goede overview heeft over alle technische aspecten van projecten. \n\n" +
@@ -52,17 +50,34 @@ public class CVBackend {
 
     Experience e1 = new Experience();
     e1.setCompany("SURFnet");
-    e1.setDescription("Provisioning/Deprovisioning in identity federations\n" +
+    e1.setIntroduction("De klant SURFnet heeft met dit project een duidelijk beeld gekregen van de technische aspecten van de oplossingsrichting die ze voor ogen had, en daarmee een gegronde beslissing kunnen nemen om hier niet mee verder te gaan.\n" +
+        "Geert zelf heeft uitgebreid kennis genomen van beschikbare diensten, softwarecomponenten en API's op het gebied van Cloud Computing.");
+    e1.setBody("Provisioning/Deprovisioning in identity federations\n" +
         "Periode: juli 2011 - Heden\n" +
         "Inzet en customization van een Open source Identity Managementcomponent (Syncope) voor provisioning van user accounts vanuit een identity federation naar service providers.");
-    e1.setFrom(new Date(2011, 0, 1));
-    e1.setUntil(new Date(2011, 11, 31));
+    e1.setFrom(new GregorianCalendar(2011, 0, 1).getTime());
+    e1.setUntil(new GregorianCalendar(2011, 11, 31).getTime());
     e1.setPosition("Software-architect");
     e1.addKeywordCategory(new KeywordCategory("Frameworks", Arrays.asList("Spring", "Wicket")));
+    e1.addKeywordCategory(new KeywordCategory("Programmeertalen", Arrays.asList("Java")));
+    e1.addKeywordCategory(new KeywordCategory("Methodes & technieken", Arrays.asList("Mind mapping", "UML")));
+    e1.addKeywordCategory(new KeywordCategory("Overig", Arrays.asList("Cloud computing", "OCCI",
+        "resource brokering", "federated identity", "ADFS", "Google Apps provisioning API")));
     cv.addExperience(e1);
 
-
     cvs.add(cv);
+
+    // Add 10 clones
+    try {
+      for (int i=0; i<10; i++) {
+        CV cv2 = cv.clone();
+        cv2.setName("geert-" + i);
+        cvs.add(cv2);
+      }
+    } catch (CloneNotSupportedException ignored) {
+    }
+
+    return cvs;
   }
 
 
@@ -78,7 +93,7 @@ public class CVBackend {
       db = new OObjectDatabaseTx(DB_URL).create();
       try {
         db.getEntityManager().registerEntityClasses("nl.iprofs.geert.cv.model");
-        for (CV cv : cvs) {
+        for (CV cv : CVBackend.getInitialCVSeed()) {
           db.save(cv);
         }
       } finally {

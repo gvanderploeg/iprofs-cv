@@ -22,5 +22,6 @@ public class CVService extends Service<CVConfiguration> {
     CVResource cvResource = new CVResource();
     cvResource.setBackend(new CVBackend());
     environment.addResource(cvResource);
+    environment.addProvider(new CVConfigurationAuthenticator());
   }
 }
